@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS nspired_user_goals;
