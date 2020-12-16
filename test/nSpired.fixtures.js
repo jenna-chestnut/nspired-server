@@ -8,134 +8,119 @@ const makeUsersArr = () => {
       user_name: 'User1',
       full_name: 'FullName1',
       password: 'Password1',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
     },
     {
       id: 2,
       user_name: 'User2',
       full_name: 'FullName2',
       password: 'Password2',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
     },
     {
       id: 3,
       user_name: 'User3',
       full_name: 'FullName3',
       password: 'Password3',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
     },
     {
       id: 4,
       user_name: 'User4',
       full_name: 'FullName4',
       password: 'Password4',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
     },
   ];
 };
 
 const makeGoalsArr = (users) => {
-  [
+  return [
     {
+      id: 1,
       goal_name: 'Test Goal!',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
       user_id: users[1].id,
+      is_public: true
     },
     {
+      id: 2,
       goal_name: 'Another test',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
       user_id: users[2].id,
+      is_public: true
     },
     {
+      id: 3,
       goal_name: 'Test goal again',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
       user_id: users[1].id,
+      is_public: true
     },
     {
-      goal_name: 'Testing! TESTING!',
-      date_created: new Date().toISOString,
+      id: 4,
+      goal_name: 'I should be a private goal.',
+      date_created: new Date(),
       user_id: users[3].id,
     },
     {
+      id: 5,
       goal_name: 'Just gonna test here for a second',
-      date_created: new Date().toISOString,
+      date_created: new Date(),
       user_id: users[0].id,
+      is_public: true
     },
   ];
 };
 
 const makeUpVotesArr = (users, goals) => {
   return [
-    { user_id: users[0].id, goal_id: goals[1].id },
-    { user_id: users[1].id, goal_id: goals[0].id },
-    { user_id: users[2].id, goal_id: goals[1].id },
-    { user_id: users[3].id, goal_id: goals[2].id },
-    { user_id: users[2].id, goal_id: goals[3].id },
-    { user_id: users[2].id, goal_id: goals[3].id },
-    { user_id: users[2].id, goal_id: goals[3].id },
-    { user_id: users[2].id, goal_id: goals[3].id }
+    { id: 1, user_id: users[0].id, goal_id: goals[1].id },
+    { id: 2, user_id: users[1].id, goal_id: goals[0].id },
+    { id: 3, user_id: users[2].id, goal_id: goals[1].id },
+    { id: 4, user_id: users[3].id, goal_id: goals[2].id },
+    { id: 5, user_id: users[2].id, goal_id: goals[0].id },
+    { id: 6, user_id: users[2].id, goal_id: goals[1].id },
+    { id: 7, user_id: users[0].id, goal_id: goals[2].id },
+    { id: 8, user_id: users[2].id, goal_id: goals[3].id }
   ];
 };
 
 const makeAdviceArr = (users, goals) => {
   return [
-    {
+    {  id: 1,
       advice_text:
 				"If I can do it, you most certainly can, lol. Just divvy things up into chunks and you'll see yourself slowly but surely getting it done!",
-      goal_id: 9,
+      goal_id: goals[1].id,
       user_id: 1,
     },
-    {
+    {  id: 2,
       advice_text:
 				"It's not all it's cracked up to, but not much tops the feeling of being onstage and singing Mary Poppins.",
-      goal_id: 6,
-      user_id: 1,
+      goal_id: goals[0].id,
+      user_id: users[2].id
     },
-    {
+    {  id: 3,
       advice_text: 'Not sure how I did this as I do not have a tail.',
-      goal_id: 4,
-      user_id: 4,
+      goal_id: goals[4].id,
+      user_id: users[3].id
     },
-    {
+    {  id: 4,
       advice_text: "We're almost there! We can do this! Bork!",
-      goal_id: 10,
-      user_id: 2,
+      goal_id: goals[2].id,
+      user_id: users[3].id
     },
-    {
+    {  id: 5,
       advice_text:
 				'The trick is to just keep spinning as fast as you can and eventually you can catch it!!! PROMISE! Bork!',
-      goal_id: 4,
-      user_id: 2,
+      goal_id: goals[3].id,
+      user_id: users[3].id,
     },
-    {
+    {  id: 6,
       advice_text: "Press all the buttons. Don't look back.",
-      goal_id: 1,
-      user_id: 3,
-    },
-    {
-      advice_text:
-				"I didn't actually accomplish this but it is nice to pretend. :-{advice_text: ",
-      goal_id: 8,
-      user_id: 5,
-    },
-    {
-      advice_text:
-				"I'm already pretty tall so this wasn't as impressive as I thought it'd be. But if you're short, you'll have a great time.",
-      goal_id: 2,
-      user_id: 3,
-    },
-    {
-      advice_text: '2020 is only as tough as you let it be.',
-      goal_id: 10,
-      user_id: 3,
-    },
-    { advice_text: 'Wait, what year is it????', goal_id: 10, user_id: 4 },
-    {
-      advice_text:
-				'I did it! Bring a lot of water and remember to take breaks. The views when you get to the top are absolutrely worth it!!',
-      goal_id: 2,
-      user_id: 5,
-    },
+      goal_id: goals[0].id,
+      user_id: users[1].id
+    }
   ];
 };
 
@@ -171,15 +156,17 @@ function cleanTables(db) {
     `TRUNCATE
       nspired_goals,
       nspired_users,
-      nspired_upvotes
+      nspired_upvotes,
+      nspired_advice
       RESTART IDENTITY CASCADE`
   );
 }
 
-function seedNSpiredTables(db, users, goals, advice = []) {
+function seedNSpiredTables(db, users, goals, upvotes, advice = []) {
   return db.transaction(async (trx) => {
     await seedStuff(trx, users, 'users');
     await seedStuff(trx, goals, 'goals');
+    await seedStuff(trx, upvotes, 'upvotes');
     advice.length && (await seedStuff(trx, advice, 'advice'));
   });
 }

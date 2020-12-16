@@ -17,7 +17,8 @@ authRouter
         });
       }
     }
-
+    console.log('passed all validation', loginUser);
+    
     return AuthService.getUserWithUserName(
       req.app.get('db'),
       loginUser.user_name
