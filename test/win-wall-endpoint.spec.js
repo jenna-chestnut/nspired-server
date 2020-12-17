@@ -13,6 +13,7 @@ describe("Win wall endpoints", () => {
     testUsers,
     testGoals,
     testUpVotes,
+    testUserGoals,
     testAdvice
   } = Fixtures.makeNSpiredFixtures();
 
@@ -41,7 +42,7 @@ describe("Win wall endpoints", () => {
 
       beforeEach("insert stuff", () => {
         return Fixtures.seedNSpiredTables(
-          db, testUsers, testGoals, testUpVotes, testAdvice
+          db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
         );
       });
 

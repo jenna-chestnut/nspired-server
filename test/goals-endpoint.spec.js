@@ -17,7 +17,8 @@ describe("Goals endpoints", () => {
     testUsers,
     testGoals,
     testUpVotes,
-    testAdvice
+    testAdvice, 
+    testUserGoals
   } = Fixtures.makeNSpiredFixtures();
 
   before("make knex instance", () => {
@@ -38,7 +39,7 @@ describe("Goals endpoints", () => {
     
     beforeEach("insert stuff", () => {
       return Fixtures.seedNSpiredTables(
-        db, testUsers, testGoals, testUpVotes, testAdvice
+        db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
       );
     });
 
@@ -63,12 +64,12 @@ describe("Goals endpoints", () => {
     context("Given a correct goal endpoint", () => {
       const goal = testGoals[0];
       const privateGoal = testGoals[3];
-      const user = testUsers[privateGoal.user_id - 1];
+      const user = testUsers[(privateGoal.user_id) - 1];
       const badUser = testUsers[goal.user_id];
 
       it("responds with 200 and the goal if goal is public", () => {
         return supertest(app).get(`/api/goals/${goal.id}`)
-          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .set('Authorization', Fixtures.makeAuthHeader(user))
           .expect(200)
           .then(res => {
             expect(res.body.id).to.eql(goal.id);
@@ -87,15 +88,140 @@ describe("Goals endpoints", () => {
       });
 
       it("responds with 200 and the goal if goal is private and username matches", () => {
+        
         return supertest(app)
           .get(`/api/goals/${privateGoal.id}`)
           .set('Authorization', Fixtures.makeAuthHeader(user))
           .expect(200)
           .then(res => {
-            expect(res.body.id).to.eql(privateGoal.id);
-            expect(res.body.user_id).to.eql(privateGoal.user_id);
-            expect(res.body.is_public).to.eql(false);
-            expect(res.body.date_created).to.eql(privateGoal.date_created.toISOString());
+            expect(res.body).to.be.an('object');
+            expect(res.body).to.have.property('id');
+            expect(res.body).to.have.property('expiration');
+            expect(res.body).to.have.property('date_created');
+            expect(res.body.goal_id).to.eql(privateGoal.id);
+            expect(res.body.user_id).to.eql(user.id);
+          });
+      });
+    });
+  });
+
+  describe("GET /goals", () => {
+
+    context('Given there are goals', () => {
+      beforeEach("insert stuff", () => {
+        return Fixtures.seedNSpiredTables(
+          db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
+        );
+      });
+
+      it('returns 200 and the list of specific user goals if user has goals', () => {
+        return supertest(app)
+          .get(`/api/goals`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(200)
+          .then(res => {
+            console.log(res.body);
+            expect(res.body).to.be.an('array');
+            expect(res.body[0].user_id).to.eql(testUsers[0].id);
+          });
+      });
+    });
+    
+  });
+
+  describe("POST /goals", () => {
+
+    beforeEach("insert stuff", () => {
+      return Fixtures.seedNSpiredTables(
+        db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
+      );
+    });
+
+    it('for a newly created goal, adds goal to goal table and user_goals table -> then returns 201 and the posted user goal', () => {
+      const newGoal = Fixtures.makeNewGoal(testUsers[0]);
+      return supertest(app)
+        .post(`/api/goals`)
+        .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+        .send(newGoal)
+        .expect(201)
+        .then(res => {
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('id');
+          expect(res.body.is_creator).to.eql(true);
+          expect(res.body.goal_name).to.eql(newGoal.goal_name);
+          expect(res.body.user_id).to.eql(testUsers[0].id);
+          expect(res.body.expiration).to.eql(newGoal.expiration.toISOString());
+          expect(res.body.personal_note).to.eql(newGoal.personal_note);
+        });
+    });
+  });
+
+  describe("POST /goals/:goalId", () => {
+
+    beforeEach("insert stuff", () => {
+      return Fixtures.seedNSpiredTables(
+        db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
+      );
+    });
+
+    it('for a cloned goal, adds goal user_goals table -> then returns 201 and the posted user goal', () => {
+      const newClone = Fixtures.makeClone(testGoals[0]);
+      return supertest(app)
+        .post(`/api/goals/${testGoals[0].id}`)
+        .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+        .send(newClone)
+        .expect(201)
+        .then(res => {
+          expect(res.body).to.be.an('object');
+          expect(res.body).to.have.property('id');
+          expect(res.body.is_creator).to.eql(false);
+          expect(res.body.goal_name).to.eql(testGoals[0].goal_name);
+          expect(res.body.user_id).to.eql(testUsers[0].id);
+          expect(res.body.expiration).to.eql(newClone.expiration.toISOString());
+          expect(res.body.personal_note).to.eql(newClone.personal_note);
+        });
+    });
+  });
+  describe("DELETE /goals/:goalId", () => {
+    context("Given there are goals/upvotes in the database", () => {
+      
+      const goal_id = testGoals[0].id;
+
+      beforeEach("insert stuff", () => {
+        return Fixtures.seedNSpiredTables(
+          db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
+        );
+      });
+      
+      
+      it(`responds with 404 goal not found if invalid link`, () => {
+        return supertest(app).delete("/api/upvotes/00000")
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(404, {
+            error: { message: 'Goal does not exist'}
+          });
+      });
+
+      it(`responds with 401 unauthorized if user does not have goal`, () => {
+        return supertest(app).delete(`/api/goals/${goal_id}`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(401, {
+            error: { message: 'Unauthorized request'}
+          });
+      });
+  
+
+      it("responds with 204 and successfully deletes user goal, making it unavailable for deletion", () => {
+        return supertest(app).delete(`/api/goals/${goal_id}`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
+          .send({})
+          .expect(204)
+          .then(() => {
+            return supertest(app).delete(`/api/goals/${goal_id}`)
+              .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
+              .expect(401, {
+                error: { message: 'Unauthorized request'}
+              });
           });
       });
     });

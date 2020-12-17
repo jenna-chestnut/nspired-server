@@ -12,7 +12,8 @@ describe('POST api/auth/login Endpoint', function() {
     testUsers,
     testGoals,
     testUpVotes,
-    testAdvice
+    testAdvice,
+    testUserGoals
   } = Fixtures.makeNSpiredFixtures();
 
   before('make knex instance', () => {
@@ -33,6 +34,7 @@ describe('POST api/auth/login Endpoint', function() {
       testUsers,
       testGoals,
       testUpVotes,
+      testUserGoals,
       testAdvice
     )
   );
