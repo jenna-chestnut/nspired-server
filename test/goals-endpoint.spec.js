@@ -5,8 +5,8 @@ const supertest = require("supertest");
 const app = require("../src/app");
 const Fixtures = require("./nSpired.fixtures");
 
-// this endpoint is to view a singular goal 
-// IE the personal goal page or public win page
+// this endpoint is to view goals
+// used for the dashboard, personal goal page or public win page
 // this is a protected endpoint and requires authorization
 
 describe("Goals endpoints", () => {
@@ -48,7 +48,9 @@ describe("Goals endpoints", () => {
         return supertest(app).get("/api/goals/0000")
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
           .expect(404,{
-            error: `Goal does not exist`
+            error: {
+              message: `Goal does not exist`
+            }
           });
       });
 
@@ -56,7 +58,9 @@ describe("Goals endpoints", () => {
         return supertest(app).get("/api/goals/test")
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
           .expect(400,{
-            error: `Goal id must be a number`
+            error: {
+              message: `Goal id must be a number`
+            }
           });
       });
     });
@@ -120,7 +124,6 @@ describe("Goals endpoints", () => {
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
           .expect(200)
           .then(res => {
-            console.log(res.body);
             expect(res.body).to.be.an('array');
             expect(res.body[0].user_id).to.eql(testUsers[0].id);
           });
@@ -182,7 +185,7 @@ describe("Goals endpoints", () => {
         });
     });
   });
-  describe("DELETE /goals/:goalId", () => {
+  describe.only ("DELETE /goals/:goalId", () => {
     context("Given there are goals/upvotes in the database", () => {
       
       const goal_id = testGoals[0].id;
@@ -195,7 +198,7 @@ describe("Goals endpoints", () => {
       
       
       it(`responds with 404 goal not found if invalid link`, () => {
-        return supertest(app).delete("/api/upvotes/00000")
+        return supertest(app).delete("/api/goals/00000")
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
           .expect(404, {
             error: { message: 'Goal does not exist'}
@@ -214,13 +217,76 @@ describe("Goals endpoints", () => {
       it("responds with 204 and successfully deletes user goal, making it unavailable for deletion", () => {
         return supertest(app).delete(`/api/goals/${goal_id}`)
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
-          .send({})
           .expect(204)
           .then(() => {
             return supertest(app).delete(`/api/goals/${goal_id}`)
               .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
               .expect(401, {
                 error: { message: 'Unauthorized request'}
+              });
+          });
+      });
+
+      it("if user owns original goal, responds with 204, deletes original goal & deletes user goal, making it entirely unavailable", () => {
+
+        return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(204)
+          .then(() => {
+            return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
+              .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+              .expect(404, {
+                error: { message: 'Goal does not exist'}
+              });
+          });
+      });
+    });
+  });
+  describe("PATCH /goals/:goalId", () => {
+    context("Given there are goals in the database", () => {
+      const data = {
+        completed: true
+      };
+      
+      const goal_id = testGoals[0].id;
+
+      beforeEach("insert stuff", () => {
+        return Fixtures.seedNSpiredTables(
+          db, testUsers, testGoals, testUpVotes, testUserGoals, testAdvice
+        );
+      });
+      
+      
+      it(`responds with 404 goal not found if invalid link`, () => {
+        return supertest(app).patch("/api/goals/00000")
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(404, {
+            error: { message: 'Goal does not exist'}
+          });
+      });
+
+      it(`responds with 401 unauthorized if user does not have goal`, () => {
+        return supertest(app).patch(`/api/goals/${goal_id}`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .send(data)
+          .expect(401, {
+            error: { message: 'Unauthorized request'}
+          });
+      });
+  
+      // test will expect a returned goal with the same id, marked as completed, and will do a get request to ensure the goal is made public so others can clone
+
+      it("responds with 201 and and successfully patched user goal", () => {
+        return supertest(app).patch(`/api/goals/${goal_id}`)
+          .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
+          .send(data)
+          .expect(201)
+          .then(() => {
+            return supertest(app).get(`/api/goals/${goal_id}`)
+              .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
+              .expect(200)
+              .then(res => {
+                expect(res.body.completed).to.eql(true);
               });
           });
       });

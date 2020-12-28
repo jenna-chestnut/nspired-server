@@ -1,6 +1,6 @@
 const express = require("express");
-const UpVotesService = require("./upvotes-service");
-const GoalsService = require('../goals/goals-service');
+const UpVotesService = require("../Services/upvotes-service");
+const GoalsService = require('../Services/goals-service');
 const { requireAuth } = require('../middleware/jwt-auth');
 
 const upvotesRouter = express.Router();
@@ -9,7 +9,7 @@ upvotesRouter
   .route('/:goalId')
   .all(requireAuth)
   .all((req, res, next) => {
-    GoalsService.doesGoalExist(
+    GoalsService.getGoal(
       req.app.get('db'),
       req.params.goalId
     )

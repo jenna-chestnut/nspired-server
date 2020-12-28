@@ -50,7 +50,7 @@ VALUES
   ('Meditate daily', now() - '8 days'::INTERVAL, 5, FALSE),
   ('Catch my tail', now() - '5 days'::INTERVAL, 2, TRUE),
   ('Start a meal prep routine', now() - '2 days'::INTERVAL, 1, FALSE),
-  ('Be in a musical', now(), 3, TRUE),
+  ('Be in a musical', now(), 3, FALSE),
   ('Win a hot dog eating contest', now() - '8 days'::INTERVAL, 5, FALSE),
   ('Whistle', now() - '5 days'::INTERVAL, 2, TRUE),
   ('Build first capstone', now() - '2 days'::INTERVAL, 1, FALSE),

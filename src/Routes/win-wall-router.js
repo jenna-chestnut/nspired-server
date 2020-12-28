@@ -1,5 +1,5 @@
 const express = require("express");
-const WinWallService = require("./win-wall-service");
+const WinWallService = require("../Services/win-wall-service");
 const xss = require('xss');
 
 const winWallRouter = express.Router();

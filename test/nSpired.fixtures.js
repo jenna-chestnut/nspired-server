@@ -92,7 +92,7 @@ const makeAdviceArr = (users, goals) => {
       advice_text:
 				"If I can do it, you most certainly can, lol. Just divvy things up into chunks and you'll see yourself slowly but surely getting it done!",
       goal_id: goals[1].id,
-      user_id: 1,
+      user_id: users[0].id,
     },
     {  id: 2,
       advice_text:
@@ -137,7 +137,7 @@ const makeUserGoalsArr = (users, goals) => {
   
     {id: 4, goal_id: goals[3].id, user_id: users[0].id, is_creator: false, completed: true, expiration: date, personal_note: 'I always wanted to do this thing'},
   
-    {id: 5, goal_id: goals[4].id, user_id: users[2].id, is_creator: false, completed: false, expiration: date, personal_note: 'I always wanted to do this thing'},
+    {id: 5, goal_id: goals[4].id, user_id: users[0].id, is_creator: true, completed: false, expiration: date, personal_note: 'I always wanted to do this thing'},
   
     {id: 6, goal_id: goals[1].id, user_id: users[0].id, is_creator: true, completed: true, expiration: date, personal_note: 'I always wanted to do this thing'},
   
@@ -164,6 +164,21 @@ const makeClone = () => {
   return { 
     expiration: date,
     personal_note: "I'm a clone, so It's a lifelong dream! duh!!"
+  };
+};
+
+const makeAdvice = () => {
+  return {
+    advice_text:
+        'This is brand new advice! Wowza!'
+  };
+};
+
+const makeNewUser = () => {
+  return {
+    full_name: 'New User',
+    user_name: 'brandNewUser',
+    password: 'SOs0s3cr3t!'
   };
 };
 
@@ -243,5 +258,7 @@ module.exports = {
   makeUpVotesArr,
   makeAdviceArr,
   makeNewGoal,
-  makeClone
+  makeClone,
+  makeAdvice,
+  makeNewUser
 };
