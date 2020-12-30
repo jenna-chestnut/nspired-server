@@ -185,7 +185,7 @@ describe("Goals endpoints", () => {
         });
     });
   });
-  describe.only ("DELETE /goals/:goalId", () => {
+  describe("DELETE /goals/:goalId", () => {
     context("Given there are goals/upvotes in the database", () => {
       
       const goal_id = testGoals[0].id;
@@ -273,8 +273,6 @@ describe("Goals endpoints", () => {
             error: { message: 'Unauthorized request'}
           });
       });
-  
-      // test will expect a returned goal with the same id, marked as completed, and will do a get request to ensure the goal is made public so others can clone
 
       it("responds with 201 and and successfully patched user goal", () => {
         return supertest(app).patch(`/api/goals/${goal_id}`)

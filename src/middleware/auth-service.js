@@ -15,6 +15,11 @@ const AuthService = {
       .where({ user_name })
       .first();
   },
+  deleteUser(db, id) {
+    return db('nspired_users')
+      .delete()
+      .where({ id });
+  },
   parseBasicToken(token) {
     return Buffer
       .from(token, 'base64')

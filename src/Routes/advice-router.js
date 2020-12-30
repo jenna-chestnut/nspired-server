@@ -4,6 +4,7 @@ const GoalsService = require("../Services/goals-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 const { checkForGoal } = require("../middleware/check-goal");
 const { prepareForAdvice } = require("../middleware/prepare-for-advice");
+const xss = require("xss");
 
 const adviceRouter = express.Router();
 
@@ -22,6 +23,18 @@ adviceRouter
         if (goal) {
           return AdviceService.getGoalAdvice(req.app.get('db'), goal_id)
             .then(advice => {
+              advice = advice.map(a => {
+                const user_advice = req.user.id === a.user_id;
+                return {
+                  id: a.id,
+                  advice_text: xss(a.advice_text),
+                  date_created: a.date_created,
+                  goal_id: a.goal_id,
+                  user_id: a.user_id,
+                  user_name: xss(a.user_name),
+                  user_advice
+                };
+              });
               res.status(200).json(advice);
             });
         }
@@ -49,7 +62,7 @@ adviceRouter
 
     // create user goal then insert into user_advice table
     const userAdvice = {
-      advice_text,
+      advice_text: xss(advice_text),
       goal_id,
       user_id
     };

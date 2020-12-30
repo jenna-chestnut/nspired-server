@@ -1,6 +1,7 @@
 /* eslint-disable eqeqeq */
 const express = require('express');
 const AuthService = require('../middleware/auth-service');
+const { requireAuth } = require("../middleware/jwt-auth");
 
 const authRouter = express.Router();
 
@@ -44,6 +45,26 @@ authRouter
         });
       });
     }).catch(next);
+  });
+
+authRouter
+  .route('/delete')
+  .delete(requireAuth, (req, res, next) => {
+
+    const { id } = req.user;
+
+    AuthService.deleteUser(req.app.get('db'), id)
+      .then((del) => {
+
+        if (!del) return res.status(404).json({
+          error: { message: 'User not found' }
+        });
+
+        return res.status(204).end();
+      })
+
+      .catch(next);
+      
   });
 
 module.exports = authRouter;

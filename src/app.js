@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
@@ -10,6 +11,7 @@ const goalsRouter = require("./Routes/goals-router");
 const upvotesRouter = require("./Routes/upvotes-router");
 const adviceRouter = require("./Routes/advice-router");
 const registerRouter = require("./Routes/registration-router");
+const inspoRouter = require("./Routes/inspo-router");
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
 
@@ -22,6 +24,7 @@ app.use(express.json());
 app.use("/api/auth", authRouter);
 app.use("/api/auth", registerRouter);
 app.use("/api/win-wall", winWallRouter);
+app.use("/api/inspo", inspoRouter);
 app.use("/api/goals", goalsRouter);
 app.use("/api/upvotes", upvotesRouter);
 app.use("/api/advice", adviceRouter);
