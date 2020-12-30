@@ -52,7 +52,7 @@ goalsRouter
     }
 
     const newGoal = { 
-      goal_name, 
+      goal_name: xss(goal_name), 
       user_id
     };
 
@@ -68,7 +68,7 @@ goalsRouter
           user_id,
           is_creator : true,
           expiration,
-          personal_note
+          personal_note: xss(personal_note)
         };
         goal_id = goal.id;
         return GoalsService.createUserGoal(req.app.get('db'), userGoal)
@@ -121,7 +121,6 @@ goalsRouter
         }
       })
       .catch(next);
-        
   })
   .post((req, res, next) => {
     const { expiration, personal_note } = req.body;
@@ -140,7 +139,7 @@ goalsRouter
       goal_id,
       user_id,
       expiration,
-      personal_note
+      personal_note: xss(personal_note)
     };
 
     GoalsService.createUserGoal(req.app.get('db'), userGoal)

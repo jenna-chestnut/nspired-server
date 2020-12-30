@@ -62,7 +62,7 @@ adviceRouter
 
     // create user goal then insert into user_advice table
     const userAdvice = {
-      advice_text,
+      advice_text: xss(advice_text),
       goal_id,
       user_id
     };
