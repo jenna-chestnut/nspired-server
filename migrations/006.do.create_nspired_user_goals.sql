@@ -8,5 +8,5 @@ CREATE TABLE nspired_user_goals (
     completed BOOLEAN default FALSE,
     date_created TIMESTAMPTZ DEFAULT now() NOT NULL,
     expiration TIMESTAMPTZ NOT NULL,
-    personal_note TEXT NOT NULL default 'You''ve got this!'
+    personal_note TEXT default 'You''ve got this!'
 );

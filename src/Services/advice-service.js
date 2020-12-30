@@ -2,8 +2,9 @@ const AdviceService = {
   getGoalAdvice(db, goal_id) {
     return db
       .from('nspired_advice')
+      .join('nspired_users', 'nspired_advice.user_id', 'nspired_users.id')
       .where({ goal_id })
-      .select('*');
+      .select('nspired_advice.*', 'nspired_users.user_name');
   },
   createAdvice(db, userAdvice) {
     return db

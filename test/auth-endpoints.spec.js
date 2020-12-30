@@ -207,4 +207,26 @@ describe('/login and /register endpoints', () => {
     });
   });
 
+  describe.only('DELETE api/auth/delete Endpoint', () => {
+
+
+    it('responds 204 and deletes user from system', () => {
+  
+      return supertest(app)
+        .delete('/api/auth/delete')
+        .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+        .expect(204)
+        .then(() => {
+          const validUserCreds = {
+            user_name: testUsers[0].user_name,
+            password: testUsers[0].password
+          };
+      
+          return supertest(app)
+            .post('/api/auth/login')
+            .send(validUserCreds)
+            .expect(400);
+        });
+    });
+  });
 });

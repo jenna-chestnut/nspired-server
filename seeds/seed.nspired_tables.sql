@@ -47,18 +47,18 @@ INSERT INTO nspired_goals (goal_name, date_created, user_id, is_public)
 VALUES
   ('Become a dev', now() - '29 days'::INTERVAL, 1, TRUE),
   ('Hike a 4000 footer', now() - '14 days'::INTERVAL, 4, TRUE),
-  ('Meditate daily', now() - '8 days'::INTERVAL, 5, FALSE),
+  ('Meditate daily', now() - '8 days'::INTERVAL, 3, FALSE),
   ('Catch my tail', now() - '5 days'::INTERVAL, 2, TRUE),
   ('Start a meal prep routine', now() - '2 days'::INTERVAL, 1, FALSE),
-  ('Be in a musical', now(), 3, FALSE),
-  ('Win a hot dog eating contest', now() - '8 days'::INTERVAL, 5, FALSE),
+  ('Be in a musical', now(), 3, TRUE),
+  ('Win a hot dog eating contest', now() - '8 days'::INTERVAL, 5, TRUE),
   ('Whistle', now() - '5 days'::INTERVAL, 2, TRUE),
   ('Build first capstone', now() - '2 days'::INTERVAL, 1, FALSE),
   ('Survive 2020', now(), 3, TRUE);
 
 INSERT INTO nspired_advice (advice_text, goal_id, user_id)
 VALUES
-  ('If I can do it, you most certainly can, lol. Just divvy things up into chunks and you''ll see yourself slowly but surely getting it done!', 9, 1),
+  ('If I can do it, you most certainly can, lol. Just divvy things up into chunks and you''ll see yourself slowly but surely getting it done!', 7, 1),
   ('It''s not all it''s cracked up to, but not much tops the feeling of being onstage and singing Mary Poppins.', 6, 1),
   ('Not sure how I did this as I do not have a tail.', 4, 4),
   ('We''re almost there! We can do this! Bork!', 10, 2),
@@ -82,7 +82,7 @@ VALUES
 
 INSERT INTO nspired_upvotes (goal_id, user_id)
 VALUES
-  (9, 1),
+  (7, 1),
   (6, 1),
   (4, 4),
   (10, 2),
@@ -108,13 +108,29 @@ INSERT INTO nspired_user_goals (goal_id, user_id, is_creator, completed, expirat
 VALUES
   (1, 1, TRUE, FALSE, now() + '35 days'::INTERVAL, 'I always wanted to do this thing'),
   (2, 4, FALSE, TRUE, now() + '30 days'::INTERVAL, 'I always wanted to do this thing'),
-  (5, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (7, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
   (1, 3, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
   (8, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
   (4, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'I always wanted to do this thing'),
-  (5, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (2, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
   (6, 3, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
-  (3, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
+  (4, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
+  (8, 3, TRUE, FALSE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (6, 2, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (4, 3, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
+  (10, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'I always wanted to do this thing'),
+    (1, 1, TRUE, FALSE, now() + '35 days'::INTERVAL, 'I always wanted to do this thing'),
+  (2, 4, FALSE, TRUE, now() + '30 days'::INTERVAL, 'I always wanted to do this thing'),
+  (3, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (1, 3, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (8, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
+  (4, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'I always wanted to do this thing'),
+  (2, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (6, 3, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (2, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
+  (8, 3, TRUE, FALSE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (6, 2, FALSE, TRUE, now() + '7 days'::INTERVAL, 'I always wanted to do this thing'),
+  (4, 3, FALSE, FALSE, now() + '3 days'::INTERVAL, 'I always wanted to do this thing'),
   (10, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'I always wanted to do this thing');
 
 COMMIT;

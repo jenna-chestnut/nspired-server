@@ -33,7 +33,6 @@ upvotesRouter
           .then(upvote => {
             const upvoted = upvote.length !== 0 
               ? true : false;
-            
             return res.status(200).json({ 
               upvotes: upvotes, 
               userUpvoted: upvoted

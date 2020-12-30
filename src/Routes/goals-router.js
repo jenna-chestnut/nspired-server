@@ -22,6 +22,19 @@ goalsRouter
             error: {message: 'Goals not found.'}
           });
         } else {
+          goals = goals.map(goal => {
+            return {
+              goal_name: xss(goal.goal_name),
+              id: goal.id,
+              goal_id: goal.goal_id,
+              user_id: goal.user_id,
+              is_creator: goal.is_creator,
+              completed: goal.completed,
+              date_created: goal.date_created,
+              expiration: goal.expiration,
+              personal_note: xss(goal.personal_note)
+            };
+          });
           return res.status(200).json(goals);
         }
       })

@@ -7,7 +7,7 @@ function prepareForAdvice(req, res, next) {
   try {
     // find goal
     GoalsService.getGoal(req.app.get('db'), goal_id)
-      .then((goal) => {
+      .then((goal) => { 
 
         // if goal is private & does not belong to user, 401
         if (goal.user_id !== user_id 

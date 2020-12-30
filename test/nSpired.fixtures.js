@@ -152,6 +152,20 @@ const makeUserGoalsArr = (users, goals) => {
   ];
 };
 
+const makeInspoArr = () => {
+  return [
+    {id: 1, inspo_quote: 'Make your life a masterpiece.'},
+    {id: 2, inspo_quote: 'It does not matter how far you go, as long as you do not stop.'},
+    {id: 3, inspo_quote: 'All great achievements require time.'},
+    {id: 4, inspo_quote:'Wherever you go, go with all your heart.'},
+    {id: 5, inspo_quote:'Good timber does not grow with ease; the stronger the wind, the stronger the trees.'},
+    {id: 6, inspo_quote:'We could never learn to be brave and patient if there were only joy in the world.'},
+    {id: 7, inspo_quote:'If you light a lamp for somebody, it will also brighten your path.'},
+    {id: 8, inspo_quote:'The world is round and the place which may seem like the end may also be the beginning.'},
+    {id: 9, inspo_quote:'Today is the tomorrow you worried about yesterday.'}
+  ];
+};
+
 const makeNewGoal = () => {
   return {
     goal_name: 'Brand New Goal!',
@@ -207,7 +221,8 @@ function makeNSpiredFixtures() {
   const testUpVotes = makeUpVotesArr(testUsers, testGoals);
   const testAdvice = makeAdviceArr(testUsers, testGoals);
   const testUserGoals = makeUserGoalsArr(testUsers, testGoals);
-  return { testUsers, testGoals, testUpVotes, testUserGoals, testAdvice };
+  const testInspo = makeInspoArr();
+  return { testUsers, testGoals, testUpVotes, testUserGoals, testAdvice, testInspo };
 }
 
 function cleanTables(db) {
@@ -216,13 +231,13 @@ function cleanTables(db) {
       nspired_goals,
       nspired_users,
       nspired_upvotes,
-      nspired_advice
+      nspired_advice, 
+      nspired_inspo
       RESTART IDENTITY CASCADE`
   );
 }
 
-function seedNSpiredTables(db, users, goals, upvotes, userGoals = [], 
-  advice = []) {
+function seedNSpiredTables(db, users, goals, upvotes, userGoals = [], advice = []) {
   return db.transaction(async (trx) => {
     await seedStuff(trx, users, 'users');
     await seedStuff(trx, goals, 'goals');
@@ -260,5 +275,6 @@ module.exports = {
   makeNewGoal,
   makeClone,
   makeAdvice,
-  makeNewUser
+  makeNewUser,
+  makeInspoArr
 };
