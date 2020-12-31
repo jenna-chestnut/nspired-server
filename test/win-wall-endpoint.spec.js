@@ -50,7 +50,6 @@ describe("Win wall endpoints", () => {
       it("responds with 200 and all public wins sorted by most upvotes, (as well as total cloned amount, total completed amount, and whether user[if logged in] has upvoted)", () => {
         return supertest(app).get("/api/win-wall").expect(200)
           .then(res => {
-            console.log(res.body);
             expect(res.body).to.be.an('array');
             expect(res.body[0]).to.have.property("id");
             expect(res.body[0]).to.have.property("goal_name");

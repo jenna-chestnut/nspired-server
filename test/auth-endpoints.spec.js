@@ -207,7 +207,7 @@ describe('/login and /register endpoints', () => {
     });
   });
 
-  describe.only('DELETE api/auth/delete Endpoint', () => {
+  describe('DELETE api/auth/delete Endpoint', () => {
 
 
     it('responds 204 and deletes user from system', () => {
