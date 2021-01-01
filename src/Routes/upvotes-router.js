@@ -7,7 +7,6 @@ const upvotesRouter = express.Router();
 
 upvotesRouter
   .route('/:goalId')
-  .all(requireAuth)
   .all((req, res, next) => {
     GoalsService.getGoal(
       req.app.get('db'),
@@ -41,7 +40,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .post((req, res, next) => {
+  .post(requireAuth, (req, res, next) => {
     const user_id = req.user.id;
     const goal_id = req.params.goalId;
 
@@ -63,7 +62,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     const user_id = req.user.id;
     const goal_id = req.params.goalId;
 
