@@ -226,20 +226,6 @@ describe("Goals endpoints", () => {
               });
           });
       });
-
-      it("if user owns original goal, responds with 204, deletes original goal & deletes user goal, making it entirely unavailable", () => {
-
-        return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
-          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
-          .expect(204)
-          .then(() => {
-            return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
-              .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
-              .expect(404, {
-                error: { message: 'Goal does not exist'}
-              });
-          });
-      });
     });
   });
   describe("PATCH /goals/:goalId", () => {

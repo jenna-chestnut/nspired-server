@@ -28,7 +28,25 @@ function requireAuth(req, res, next) {
     return res.status(401).json({error: 'Unauthorized request'});
   }
 }
+
+function checkUserInfo(req, res, next) {
+  const authToken = req.get('authorization') || '';
+
+  let bearerToken = authToken.slice(7, authToken.length);
+
+  const payload = AuthService.verifyJwt(bearerToken); 
+
+  AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
+    .then(user => {
+      req.user = user;
+      next();
+    }).catch(err => {
+      console.error(err);
+      next(err);
+    });
+}
   
 module.exports = {
   requireAuth,
+  checkUserInfo
 };

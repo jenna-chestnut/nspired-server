@@ -1,7 +1,7 @@
 const express = require("express");
 const UpVotesService = require("../Services/upvotes-service");
 const GoalsService = require('../Services/goals-service');
-const { requireAuth } = require('../middleware/jwt-auth');
+const { requireAuth, checkUserInfo } = require('../middleware/jwt-auth');
 
 const upvotesRouter = express.Router();
 
@@ -22,7 +22,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .get((req, res, next) => {
+  .get(checkUserInfo, (req, res, next) => {
     const user_id = req.user ? req.user.id : null;
     const goal_id = req.params.goalId;
     
