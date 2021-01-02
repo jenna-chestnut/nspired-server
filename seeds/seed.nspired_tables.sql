@@ -123,6 +123,6 @@ VALUES
   (3, 3, TRUE, TRUE, now() + '7 days'::INTERVAL, 'Lorem ipsum dolor sit amet.'),
   (1, 3, FALSE, TRUE, now() + '7 days'::INTERVAL, 'Vestibulum gravida diam id finibus.'),
   (8, 5, FALSE, FALSE, now() + '3 days'::INTERVAL, 'Nam sed sollicitudin nulla. Donec.'),
-  (4, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'Duis vitae sodales risus, sollicitudin.'),
+  (4, 2, TRUE, TRUE, now() + '1 days'::INTERVAL, 'Duis vitae sodales risus, sollicitudin.');
 
 COMMIT;
