@@ -41,17 +41,7 @@ const GoalsService = {
       .into('nspired_user_goals')
       .returning('*');
   },
-  deletePublicGoal(db, goal_id) {
-    return db
-      .from('nspired_goals')
-      .where({ id: goal_id})
-      .delete();
-  },
-  deleteGoal(db, user_id, goal_id, is_creator) {
-    if (is_creator) {
-      return this.deletePublicGoal(db, goal_id);
-    }
-
+  deleteGoal(db, user_id, goal_id) {
     return db
       .from('nspired_user_goals')
       .where({ user_id })

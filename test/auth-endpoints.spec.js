@@ -20,7 +20,7 @@ describe('/login and /register endpoints', () => {
   before('make knex instance', () => {
     db = knex({
       client: 'pg',
-      connection: process.env.TEST_DB_URL,
+      connection: process.env.TEST_DATABASE_URL,
     });
     app.set('db', db);
   });
@@ -207,7 +207,7 @@ describe('/login and /register endpoints', () => {
     });
   });
 
-  describe.only('DELETE api/auth/delete Endpoint', () => {
+  describe('DELETE api/auth/delete Endpoint', () => {
 
 
     it('responds 204 and deletes user from system', () => {

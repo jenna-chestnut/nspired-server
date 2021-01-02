@@ -24,7 +24,7 @@ describe("Goals endpoints", () => {
   before("make knex instance", () => {
     db = knex({
       client: "pg",
-      connection: process.env.TEST_DB_URL
+      connection: process.env.TEST_DATABASE_URL
     });
     app.set("db", db);
   });
@@ -223,20 +223,6 @@ describe("Goals endpoints", () => {
               .set('Authorization', Fixtures.makeAuthHeader(testUsers[1]))
               .expect(401, {
                 error: { message: 'Unauthorized request'}
-              });
-          });
-      });
-
-      it("if user owns original goal, responds with 204, deletes original goal & deletes user goal, making it entirely unavailable", () => {
-
-        return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
-          .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
-          .expect(204)
-          .then(() => {
-            return supertest(app).delete(`/api/goals/${testGoals[4].id}`)
-              .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
-              .expect(404, {
-                error: { message: 'Goal does not exist'}
               });
           });
       });

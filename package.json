@@ -1,5 +1,5 @@
 {
-  "name": "knex-postgres-boilerplate",
+  "name": "nspired-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -10,10 +10,15 @@
     "dev": "nodemon src/server.js",
     "migrate": "postgrator --config postgrator-config.js",
     "migrate:test": "env NODE_ENV=test npm run migrate",
-    "predeploy": "npm audit",
-    "deploy": "git push heroku main"
+    "migrate:production": "heroku run npm run migrate",
+    "predeploy": "npm audit && npm run migrate:production",
+    "deploy": "git push heroku main",
+    "seed:production": "cat ./seeds/seed.nspired_tables.sql | heroku pg:psql"
   },
   "keywords": [],
+  "engines": {
+    "node": "12.19.0"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {

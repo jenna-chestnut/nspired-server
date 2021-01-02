@@ -1,13 +1,12 @@
 const express = require("express");
 const UpVotesService = require("../Services/upvotes-service");
 const GoalsService = require('../Services/goals-service');
-const { requireAuth } = require('../middleware/jwt-auth');
+const { requireAuth, checkUserInfo } = require('../middleware/jwt-auth');
 
 const upvotesRouter = express.Router();
 
 upvotesRouter
   .route('/:goalId')
-  .all(requireAuth)
   .all((req, res, next) => {
     GoalsService.getGoal(
       req.app.get('db'),
@@ -23,7 +22,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .get((req, res, next) => {
+  .get(checkUserInfo, (req, res, next) => {
     const user_id = req.user ? req.user.id : null;
     const goal_id = req.params.goalId;
     
@@ -41,7 +40,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .post((req, res, next) => {
+  .post(requireAuth, (req, res, next) => {
     const user_id = req.user.id;
     const goal_id = req.params.goalId;
 
@@ -63,7 +62,7 @@ upvotesRouter
       })
       .catch(next);
   })
-  .delete((req, res, next) => {
+  .delete(requireAuth, (req, res, next) => {
     const user_id = req.user.id;
     const goal_id = req.params.goalId;
 

@@ -175,8 +175,7 @@ goalsRouter
         GoalsService.deleteGoal(
           req.app.get('db'),
           user_id,
-          goal_id,
-          goal.is_creator
+          goal_id
         )
           .then((deleted) => {
            
