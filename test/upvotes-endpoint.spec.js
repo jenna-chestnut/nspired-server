@@ -31,7 +31,7 @@ describe("Upvote endpoints", () => {
 
   afterEach("cleanup", () => Fixtures.cleanTables(db));
 
-  describe("GET /upvotes/:goalId", () => {
+  describe.only("GET /upvotes/:goalId", () => {
     context("Given there are goals/upvotes in the database", () => {
 
       beforeEach("insert stuff", () => {
@@ -49,9 +49,19 @@ describe("Upvote endpoints", () => {
       });
   
 
-      it("responds with 200 and the goal's upvotes, including a note of whether the user has upvoted for rendering purposes if someone is logged in", () => {
+      it("logged in => responds with 200 and the goal's upvotes, including a note of whether the user has upvoted for rendering purposes if someone is logged in", () => {
         return supertest(app).get(`/api/upvotes/${testGoals[0].id}`)
           .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+          .expect(200)
+          .then(res => {
+            expect(res.body).to.have.property('upvotes');
+            expect(res.body).to.have.property('userUpvoted');
+          });
+      });
+
+      it("not logged in => responds with 200 and the goal's upvotes, including a note of whether the user has upvoted for rendering purposes if someone is logged in", () => {
+        return supertest(app).get(`/api/upvotes/${testGoals[0].id}`)
+          .set('Authorization', 'bearer ')
           .expect(200)
           .then(res => {
             expect(res.body).to.have.property('upvotes');

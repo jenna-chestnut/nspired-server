@@ -34,16 +34,20 @@ function checkUserInfo(req, res, next) {
 
   let bearerToken = authToken.slice(7, authToken.length);
 
-  const payload = AuthService.verifyJwt(bearerToken); 
+  if (!bearerToken) next();
+  
+  else { 
+    const payload = AuthService.verifyJwt(bearerToken);
 
-  AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
-    .then(user => {
-      req.user = user;
-      next();
-    }).catch(err => {
-      console.error(err);
-      next(err);
-    });
+    AuthService.getUserWithUserName(req.app.get('db'), payload.sub)
+      .then(user => {
+        req.user = user;
+        next();
+      }).catch(err => {
+        console.error(err);
+        next(err);
+      });
+  }
 }
   
 module.exports = {
