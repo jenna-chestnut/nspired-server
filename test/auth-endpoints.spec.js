@@ -209,17 +209,36 @@ describe('/login and /register endpoints', () => {
 
   describe('DELETE api/auth/delete Endpoint', () => {
 
+    it('refuses to delete demo user (id of 1, 2, 3)', () => {
+  
+      return supertest(app)
+        .delete('/api/auth/delete')
+        .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+        .expect(400)
+        .then(() => {
+          const validUserCreds = {
+            user_name: testUsers[0].user_name,
+            password: testUsers[0].password
+          };
+      
+          return supertest(app)
+            .post('/api/auth/login')
+            .send(validUserCreds)
+            .expect(200);
+        });
+    });
+
 
     it('responds 204 and deletes user from system', () => {
   
       return supertest(app)
         .delete('/api/auth/delete')
-        .set('Authorization', Fixtures.makeAuthHeader(testUsers[0]))
+        .set('Authorization', Fixtures.makeAuthHeader(testUsers[3]))
         .expect(204)
         .then(() => {
           const validUserCreds = {
-            user_name: testUsers[0].user_name,
-            password: testUsers[0].password
+            user_name: testUsers[3].user_name,
+            password: testUsers[3].password
           };
       
           return supertest(app)

@@ -14,8 +14,7 @@ function checkForGoal(req, res, next) {
   try {
     GoalsService.getGoal(req.app.get('db'), goal_id)
       .then((goal) => {
-
-        // if goal does not exist, 404
+        
         if (!goal) {
           return res.status(404).json({
             error: { 

@@ -53,6 +53,12 @@ authRouter
 
     const { id } = req.user;
 
+    if ( parseInt(id) === 1 || parseInt(id) === 2 || parseInt(id) === 3 ) {
+      return res.status(400).json({
+        error: { message: 'Demo user cannot be deleted' }
+      });
+    }
+
     AuthService.deleteUser(req.app.get('db'), id)
       .then((del) => {
 

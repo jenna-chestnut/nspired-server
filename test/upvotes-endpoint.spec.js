@@ -31,7 +31,7 @@ describe("Upvote endpoints", () => {
 
   afterEach("cleanup", () => Fixtures.cleanTables(db));
 
-  describe.only("GET /upvotes/:goalId", () => {
+  describe("GET /upvotes/:goalId", () => {
     context("Given there are goals/upvotes in the database", () => {
 
       beforeEach("insert stuff", () => {
