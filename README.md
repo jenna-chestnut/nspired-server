@@ -39,19 +39,24 @@ This server-side app was created with:
 ➖**Routes🔻**    
 ➖**BASE URL: /api**   
 
-➖➖*/win-wall*   
-➖➖➖*/win-wall/mini*  
+➖➖*/win-wall*
+➖➖➖*/win-wall/mini*    
+(GET)
 
-➖➖*/advice/:goalId*  
+➖➖*/advice/:goalId* 
+(GET, POST, DELETE)
 
 ➖➖*/goals*  
 ➖➖➖*/goals/:goalId*  
+(GET, POST, DELETE, PATCH)
 
-➖➖*/upvotes/:goalId*  
+➖➖*/upvotes/:goalId*    
+(GET, POST, DELETE)
 
 ➖➖*/auth/login*  
 ➖➖*/auth/delete*  
-➖➖*/auth/register* 
+➖➖*/auth/register*   
+(POST, DELETE)
   
 ---  
   
